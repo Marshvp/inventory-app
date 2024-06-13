@@ -132,8 +132,15 @@ exports.item_delete_get = asyncHandler(async (req, res, next) => {
 
 
 exports.item_delete_post = asyncHandler(async (req, res, next) => {
+    const { id, password } = req.body
 
-    await Item.findByIdAndDelete(req.params.id)
+    if(password !== 'secretpassword') {
+        const err = new Error('Incorrect password')
+        err.status = 401
+        return next(err)
+    }
+
+    await Item.findByIdAndDelete(id)
     res.redirect('/inventory/items')
 })
 

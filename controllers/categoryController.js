@@ -52,7 +52,7 @@ exports.category_delete_post = asyncHandler(async (req, res, next) => {
         Item.find({ category: req.params.id }).exec()
     ])
 
-    if (items.length > 0) {
+    if (items.length > 0 ) {
         res.render('category_delete', { title: 'Delete Category', category: category, items: items })
         return
     } else {
