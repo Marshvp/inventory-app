@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const item_controller = require('../controllers/itemController')
+const category_controller = require('../controllers/categoryController')
 
 // load home page
 router.get('/', item_controller.index);
@@ -28,5 +29,14 @@ router.post('/items/:id/update', item_controller.item_update_post)
 
 // get one item
 router.get('/items/:id', item_controller.item_detail)
+
+
+// Category Routes
+
+// get all categories
+router.get('/categories', category_controller.category_list)
+
+// get one category
+router.get('/categories/:id', category_controller.items_by_category)
 
 module.exports = router

@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+    h1= title
+
+    div(class='grid grid-cols-3 gap-1')
+        for category in categories
+            div(class='border-zinc-300 border-2 rounded-lg p-2')
+                p Name: #{category.name}
+                p ID: #{category._id}
+                p Total Items in Category: #{category.itemCount}
+                br
+                a(href=category.url class='bg-blue-500 rounded border-gray-500 border-2 p-1 mt-5') view
+                hr
+                br

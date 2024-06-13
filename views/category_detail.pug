@@ -1,7 +1,9 @@
 extends layout 
-block content 
-    h1= title
 
+block content
+
+    h1= title
+    h2= category.name
     div(class='grid grid-cols-3 gap-1')
         for item in items
             div(class='border-zinc-300 border-2 rounded-lg p-2')
