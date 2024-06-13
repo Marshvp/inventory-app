@@ -649,3 +649,9 @@ video {
 .pt-2 {
   padding-top: 0.5rem;
 }
+.font-bold {
+  font-weight: 700;
+}
+.underline {
+  text-decoration-line: underline;
+}

@@ -1,5 +1,17 @@
 extends layout 
 
 block content
-    h1 Inventory Home
+    h1(class='font-bold underline') Inventory Home
+    p Welcome to #{title}
+            for item in items
+                div
+                    p Name: #{item.name}
+                    p Description: #{item.description}
+                    p Category: #{item.category}
+                    p Quantity: #{item.quantity}
+                    p Price: #{item.price}
+                    p ID: #{item._id}
+                    br
+
+
     
