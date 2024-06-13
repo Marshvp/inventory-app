@@ -14,6 +14,12 @@ router.get('/items/add', item_controller.item_create_get)
 // post new item
 router.post('/items/add', item_controller.item_create_post)
 
+// get delete item
+router.get('/items/:id/delete', item_controller.item_delete_get)
+
+// post delete item
+router.post('/items/:id/delete', item_controller.item_delete_post)
+
 // get one item
 router.get('/items/:id', item_controller.item_detail)
 

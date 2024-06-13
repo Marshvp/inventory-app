@@ -117,3 +117,22 @@ exports.item_create_post = [
         }
     })
 ]
+
+exports.item_delete_get = asyncHandler(async (req, res, next) => {
+    const item = await Item.findById(req.params.id).populate('category').exec()
+
+    if(item == null) {
+        const err = new Error('Item not found')
+        err.status = 404
+        return next(err)
+    } else {
+        res.render('item_delete', { title: 'Delete Item', item: item })
+    }
+})
+
+
+exports.item_delete_post = asyncHandler(async (req, res, next) => {
+
+    await Item.findByIdAndDelete(req.params.id)
+    res.redirect('/inventory/items')
+})
