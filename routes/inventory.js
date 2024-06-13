@@ -36,6 +36,12 @@ router.get('/items/:id', item_controller.item_detail)
 // get all categories
 router.get('/categories', category_controller.category_list)
 
+// delete category
+router.get('/categories/:id/delete', category_controller.category_delete_get)
+
+// post delete category
+router.post('/categories/:id/delete', category_controller.category_delete_post)
+
 // get one category
 router.get('/categories/:id', category_controller.items_by_category)
 

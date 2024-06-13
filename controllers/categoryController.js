@@ -8,11 +8,15 @@ exports.category_list = asyncHandler(async (req, res, next) => {
 
     const categoriesWithCounts = await Promise.all(allCategories.map(async (category) => {
         const itemCount = await Item.countDocuments({ category: category._id }).exec()
-        return {
+        const categoryObj = {
             ...category._doc,
             itemCount: itemCount
-        }
+        };
+        categoryObj.url = category.url
+        return categoryObj
     }))
+;
+
 
     res.render('category_list', { title: 'Category List', categories: categoriesWithCounts })
 })
@@ -25,3 +29,34 @@ exports.items_by_category = asyncHandler(async (req, res, next) => {
     res.render('category_detail', { title: 'Category', category: category, items: items })
 })
 
+exports.category_delete_get = asyncHandler(async (req, res, next) => {
+    const [category, items] = await Promise.all([
+        Category.findById(req.params.id).exec(),
+        Item.find({ category: req.params.id }).exec()
+    ])
+
+    if (category == null) {
+        const err = new Error('Category not found')
+        err.status = 404
+        return next(err)
+    } else {
+        res.render('category_delete', { title: 'Delete Category', category: category, items: items })
+    }
+
+})
+
+
+exports.category_delete_post = asyncHandler(async (req, res, next) => {
+    const [category, items] = await Promise.all([
+        Category.findById(req.params.id).exec(),
+        Item.find({ category: req.params.id }).exec()
+    ])
+
+    if (items.length > 0) {
+        res.render('category_delete', { title: 'Delete Category', category: category, items: items })
+        return
+    } else {
+        await Category.findByIdAndDelete(req.params.id)
+        res.redirect('/inventory/categories')
+    }
+})
