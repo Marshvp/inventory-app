@@ -557,6 +557,9 @@ video {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
 }
+.mt-4 {
+  margin-top: 1rem;
+}
 .block {
   display: block;
 }
@@ -651,6 +654,10 @@ video {
 }
 .font-bold {
   font-weight: 700;
+}
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 .underline {
   text-decoration-line: underline;

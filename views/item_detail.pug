@@ -1,0 +1,11 @@
+extends layout 
+
+block content 
+    h1= title
+    h2= item.name
+
+    p desc = #{item.description}
+    p cat = #{item.category.name}
+    p qty = #{item.quantity}
+    p price = #{item.price}
+    p id = #{item._id}

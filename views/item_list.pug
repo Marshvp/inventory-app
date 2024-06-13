@@ -1,0 +1,14 @@
+extends layout 
+block content 
+    h1= title
+
+    for item in items
+        div
+            p Name: #{item.name}
+            p Description: #{item.description}
+            p Category: #{item.category.name}
+            p Quantity: #{item.quantity}
+            p Price: #{item.price}
+            p ID: #{item._id}
+            a(href=item.url) view
+            br

@@ -1,0 +1,38 @@
+extends layout 
+
+block content 
+    h1= title
+
+    form(method='POST')
+
+        div
+            if errors
+              ul
+                each error in errors
+                  li(class='text-red-500') #{error.msg}
+
+        div(class='mt-4')
+            label(for='name') Name
+            input(type='text' name='name' id='name' value=(data ? data.name : ''))
+        div(class='mt-4')
+            label(for='description') Description
+            textarea(type='text' name='description' id='description') #{data ? data.description : ''}
+        div(class='mt-4')
+            label(for='quantity') Quantity
+            input(type='number' name='quantity' id='quantity' value=(data ? data.quantity : ''))
+        div(class='mt-4')
+            label(for='price') Price(£)
+            input(type='number' name='price' id= 'price' value=(data ? data.price : ''))
+        div(class='mt-4')
+            label(for='category') Select an Existing Category (or leave blank to add a new one)
+            select(name='category' id='category')
+                option(value='') Select an Existing Category
+                each category in categories
+                    option(value=category._id selected=(data && data.category == category._id)) #{category.name}
+        div(class='mt-4')
+            label(for='newCategory') Add a New Category
+            input(type='text' name='newCategory' id='newCategory' value=(data ? data.category : ''))
+
+
+        div
+            button(type='submit') Submit
