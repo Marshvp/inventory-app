@@ -1,0 +1,42 @@
+extends layout 
+
+block content 
+    h1= title
+    h2= item.name
+
+    form(method='POST')
+
+        div
+            if errors
+              ul
+                each error in errors
+                  li(class='text-red-500') #{error.msg}
+
+        div 
+            label(for='name') Update Name
+            input(type="text" name="name" id="name" value=item.name placeholder=item.name)
+
+        div 
+            label(for='description') Update Description
+            textarea(type="text" name="description" id="description" placeholder=item.description) #{item.description}
+
+        div 
+            label(for='quantity') Update Quantity
+            input(type="number" name="quantity" id="quantity" value=item.quantity placeholder=item.quantity)
+
+        div 
+            label(for='price') Update Price
+            input(type="number" name="price" id="price" value=item.price placeholder=item.price)
+
+        div 
+            label(for='category') Select an Existing Category (or leave blank to add a new one)
+            select(name="category" id="category")
+                option(value="") Select an Existing Category
+                each category in categories
+                    option(value=category._id selected=(item.category && item.category.equals(category._id))) #{category.name}
+                    
+        div 
+            label(for='newCategory') or Add a New Category
+            input(type="text" name="newCategory" id="newCategory")
+
+        button(type="submit") Update Item

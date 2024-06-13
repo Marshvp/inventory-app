@@ -136,3 +136,102 @@ exports.item_delete_post = asyncHandler(async (req, res, next) => {
     await Item.findByIdAndDelete(req.params.id)
     res.redirect('/inventory/items')
 })
+
+exports.item_update_get = asyncHandler(async (req, res, next) => {
+    const [ item, categories ] = await Promise.all([
+        Item.findById(req.params.id).populate('category').exec(),
+        Category.find({}).exec()
+    ])
+    
+    if (item == null) {
+        const err = new Error('Item not found')
+        err.status = 404
+        return next(err)
+    } else {
+        res.render('item_update', { title: 'Update Item', item: item, categories: categories, errors: null })
+    }
+
+    
+})
+
+exports.item_update_post = [
+
+    body('name', 'Name must not be empty and longer than 3')
+        .trim()
+        .isLength({ min : 3}) 
+        .escape(),
+    body('description', 'Description must not be empty.')
+        .trim()
+        .isLength({ min : 1 })
+        .escape(),
+    body('price', 'Price must not be empty.')
+        .isFloat()
+        .trim()
+        .isLength({ gt : 0 })
+        .escape(),
+    body('quantity', 'Quantity must not be empty.')
+        .isInt()
+        .trim()
+        .isLength({ gt : 0 })
+        .escape(),
+    body('category').custom((value, { req }) => {
+        if(!value && !req.body.newCategory.trim()) {
+            throw new Error('Category must not be empty.')
+        }
+        return true;
+    }),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req)
+
+        if(!errors.isEmpty()) {
+            const [ item, categories ] = await Promise.all([
+                Item.findById(req.params.id).populate('category').exec(),
+                Category.find({}).exec()
+            ])
+
+            if (item == null) {
+                const err = new Error('Item not found')
+                err.status = 404
+                return next(err)
+            } else {
+                return res.render('item_update', { 
+                    title: 'Update Item', 
+                    item: item, 
+                    categories: categories, 
+                    errors: errors.array(), 
+                })
+            }
+        }
+
+        let categoryId;
+        if(req.body.newCategory && req.body.newCategory.trim() !== '') {
+            const newCat = new Category({
+                name: req.body.newCategory,
+                description: ""
+            })
+
+            await newCat.save()
+            categoryId = newCat._id
+        } else {
+            categoryId = req.body.category
+        }
+
+        const item = new Item({
+            name: req.body.name,
+            description: req.body.description,
+            category: categoryId,
+            price: req.body.price,
+            quantity: req.body.quantity,
+            _id: req.params.id
+        })
+
+        const updatedItem = await Item.findByIdAndUpdate(req.params.id, item, {})
+        if(!updatedItem) {
+            const err = new Error('Unable to finda and Update')
+            err.status = 404
+            return next(err)
+        }
+        res.redirect(updatedItem.url)
+    })
+]
